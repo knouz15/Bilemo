@@ -14,58 +14,67 @@ class Phone
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["getPhones","getCustomers"])]
+    // #[Groups(["getPhones","getCustomers"])]
+    #[Groups(["listPhones"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 150)]
-    #[Groups(["getPhones","getCustomers"])]
-    
+    // #[Groups(["getPhones","getCustomers"])]
+    #[Groups(["listPhones","showPhone"])]
     private ?string $brand = null;
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Groups(["getPhones","getCustomers"])]
+    // #[Groups(["getPhones","getCustomers"])]
+    #[Groups(["listPhones","showPhone"])]
     private ?string $description = null;
 
     #[ORM\Column]
-    #[Groups(["getPhones","getCustomers"])]
+    // #[Groups(["getPhones","getCustomers"])]
+    #[Groups(["listPhones","showPhone"])]
     private ?float $price = null;
 
     #[ORM\Column(length: 45)]
-    #[Groups(["getPhones","getCustomers"])]
+    // #[Groups(["getPhones","getCustomers"])]
+    #[Groups(["listPhones","showPhone"])]
     private ?string $color = null;
 
     #[ORM\Column]
-    #[Groups(["getPhones","getCustomers"])]
+    // #[Groups(["getPhones","getCustomers"])]
+    #[Groups(["listPhones"])]
     private ?float $weight = null;
 
     #[ORM\Column]
-    #[Groups(["getPhones","getCustomers"])]
+    // #[Groups(["getPhones","getCustomers"])]
+    #[Groups(["listPhones"])]
     private ?bool $nfc = null;
 
     #[ORM\Column(length: 150)]
-    #[Groups(["getPhones","getCustomers"])]
+    // #[Groups(["getPhones","getCustomers"])]
+    #[Groups(["listPhones","showPhone"])]
     private ?string $model = null;
 
     #[ORM\Column(length: 50)]
-    #[Groups(["getPhones","getCustomers"])]
+    // #[Groups(["getPhones","getCustomers"])]
+    #[Groups(["listPhones"])]
     private ?string $resolution = null;
 
     #[ORM\Column(length: 45)]
-    #[Groups(["getPhones","getCustomers"])]
+    // #[Groups(["getPhones","getCustomers"])]
+    #[Groups(["listPhones"])]
     private ?string $storage = null;
 
     #[ORM\Column(type: 'datetime_immutable', 
     options: ['default' => 'CURRENT_TIMESTAMP'])]
-    private $createdAt;
-    // private ?\DateTimeImmutable $createdAt = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'phones')]
-    #[ORM\JoinColumn(onDelete:"CASCADE")]
-    #[Groups(["getPhones"])]
-    private ?Customer $customer = null;
+    // #[ORM\ManyToOne(inversedBy: 'phones')]
+    // #[ORM\JoinColumn(onDelete:"CASCADE")]
+    
+    // #[Groups(["showPhone"])]
+    // private ?Customer $customer = null;
 
     public function __construct()
     {
@@ -210,18 +219,18 @@ class Phone
         return $this;
     }
 
-    public function getCustomer(): ?Customer
-    {
+    // public function getCustomer(): ?Customer
+    // {
         
-        return $this->customer;
-    }
+    //     return $this->customer;
+    // }
 
-    public function setCustomer(?Customer $customer): self
-    {
-        $this->customer = $customer;
+    // public function setCustomer(?Customer $customer): self
+    // {
+    //     $this->customer = $customer;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
 
 }
