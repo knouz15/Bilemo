@@ -1,57 +1,64 @@
 <?php
 
-namespace App\Entity;
+namespace App\Entity; 
 
-use App\Entity\Phone;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\CustomerRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 #[ORM\Entity(repositoryClass: CustomerRepository::class)]
-class Customer
-{ 
+class Customer implements UserInterface, PasswordAuthenticatedUserInterface
+{
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(["getPhones","getCustomers","getUser"])]
+
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    #[Groups(["getPhones","getCustomers","showUser"])]
-    private ?string $name = null;
-
-    #[ORM\Column(length: 255)]
-    #[Groups(["getPhones","getCustomers","showUser"])]
+    #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank(message: "L' email est obligatoire")]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
-    #[Groups(["getPhones","getCustomers","getUsers"])]
-    private ?string $adress = null;
+    #[ORM\Column(length: 150)]
+    #[Assert\NotBlank(message: "Le nom de votre société est obligatoire")]
+    private ?string $society = null;
 
-    #[ORM\Column(length: 255)]
-    #[Groups(["getPhones","getCustomers","getUsers"])]
-    private ?string $phoneNumber = null;
+    // #[ORM\Column(length: 100)]
+    // private ?string $username = null;
+
+    #[ORM\Column]
+    private array $roles = [];
+
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
+    private ?string $password = null;
+
+    #[ORM\Column(length: 25)]
+    #[Assert\NotBlank(message: "Renseigner votre téléphone est obligatoire")]
+    private ?string $phonenumber = null;
+
+    
 
     #[ORM\Column(type: 'datetime_immutable', 
     options: ['default' => 'CURRENT_TIMESTAMP',"getUsers"])]
-    private \DateTimeImmutable $createdAt;
+    private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
-
-    #[ORM\OneToMany(mappedBy: 'customer', targetEntity: Phone::class)]
-    #[Groups(["getCustomers"])]
-    private Collection $phones;
 
     #[ORM\OneToMany(mappedBy: 'customer', targetEntity: User::class, orphanRemoval: true)]
     private Collection $users;
 
     public function __construct()
     {
-        $this->phones = new ArrayCollection();
         $this->createdAt = new DateTimeImmutable();
         $this->users = new ArrayCollection();
     }
@@ -59,18 +66,6 @@ class Customer
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
     }
 
     public function getEmail(): ?string
@@ -85,29 +80,100 @@ class Customer
         return $this;
     }
 
-    public function getAdress(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
     {
-        return $this->adress;
+        return (string) $this->email;
     }
 
-    public function setAdress(string $adress): self
+     /**
+     * Méthode getUsername qui permet de retourner le champ qui est utilisé pour l'authentification.
+     *
+     * @return string
+     */
+    public function getUsername(): string {
+        return $this->getUserIdentifier();
+    }
+
+    // public function setUsername(string $username): self
+    // {
+    //     $this->username = $username;
+
+    //     return $this;
+    // }
+
+    public function getSociety(): ?string
     {
-        $this->adress = $adress;
+        return $this->society;
+    }
+
+    public function setSociety(string $society): self
+    {
+        $this->society = $society;
 
         return $this;
     }
 
-    public function getPhoneNumber(): ?string
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
     {
-        return $this->phoneNumber;
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
     }
 
-    public function setPhoneNumber(string $phoneNumber): self
+    public function setRoles(array $roles): self
     {
-        $this->phoneNumber = $phoneNumber;
+        $this->roles = $roles;
 
         return $this;
     }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
+
+    public function getPhonenumber(): ?string
+    {
+        return $this->phonenumber;
+    }
+
+    public function setPhonenumber(string $phonenumber): self
+    {
+        $this->phonenumber = $phonenumber;
+
+        return $this;
+    }
+
+    
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -133,39 +199,7 @@ class Customer
         return $this;
     }
 
-    /**
-     * @return Collection<int, Phone>
-     */
-    public function getPhones(): Collection
-    {
-        return $this->phones;
-    }
-
-    public function addPhone(Phone $phone): self
-    {
-        if (!$this->phones->contains($phone)) {
-            $this->phones->add($phone);
-            $phone->setCustomer($this);
-        }
-
-        return $this;
-    }
-
-    public function removePhone(Phone $phone): self
-    {
-        if ($this->phones->removeElement($phone)) {
-            // set the owning side to null (unless already changed)
-            if ($phone->getCustomer() === $this) {
-                $phone->setCustomer(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, User>
-     */
+    
     public function getUsers(): Collection
     {
         return $this->users;
@@ -193,3 +227,4 @@ class Customer
         return $this;
     }
 }
+

@@ -17,13 +17,13 @@ class CustomerController extends AbstractController
     {
         $customerList = $customerRepository->findAll();
 
-        $jsonCustomerList = $serializer->serialize($customerList, 'json', ['groups' => 'getCustomers']);
+        $jsonCustomerList = $serializer->serialize($customerList, 'json', ['groups' => 'listCustomers']);
         return new JsonResponse($jsonCustomerList, Response::HTTP_OK, [], true);
     }
 
     #[Route('/api/customers/{id}', name: 'detailCustomer', methods: ['GET'])]
     public function getDetailCustomer(Customer $customer, SerializerInterface $serializer) {
-        $jsonCustomer = $serializer->serialize($customer, 'json', ['groups' => 'getCustomers']);
+        $jsonCustomer = $serializer->serialize($customer, 'json', ['groups' => 'showCustomer']);
         return new JsonResponse($jsonCustomer, Response::HTTP_OK, [], true);
     }
 } 

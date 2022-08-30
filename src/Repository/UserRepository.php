@@ -39,6 +39,18 @@ class UserRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllWithPagination($page, $limit) {
+        $qb = $this->createQueryBuilder('b')
+            ->setFirstResult(($page - 1) * $limit) //à partir de qd
+            ->setMaxResults($limit); //nbre de phones retournés
+            //vider le cache:fetchMode é le mode récup ds dnées, fetch_eager(tout charger) au lieu de fetch_lazy 
+            $query = $qb->getQuery();
+            $query->setFetchMode(User::class, "", \Doctrine\ORM\Mapping\ClassMetadata::FETCH_EAGER);
+        
+        
+        return $qb->getQuery()->getResult();
+    }
+
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */

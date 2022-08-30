@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User
@@ -17,36 +18,68 @@ class User
     
     #[ORM\Column(length: 255)]
     #[Groups(["listUsers","showUser"])]
+    #[Assert\NotBlank(message: "Le username est obligatoire")]
     private ?string $username = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(["listUsers","showUser"])]
+    #[Assert\NotBlank(message: "L'email l'auteur est obligatoire")]
     private ?string $email = null;
 
-    #[ORM\Column(length: 255)]
-    
-    private ?string $password = null;
+    // #[ORM\Column(length: 255)]
+    // private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 50)]
     #[Groups(["listUsers","showUser"])]
+    #[Assert\NotBlank(message: "Le nom est obligatoire")]
+    #[Assert\Length(min: 1, max: 255, minMessage: "Le nom doit faire au moins {{ limit }} caractère", maxMessage: "Le nom ne peut pas faire plus de {{ limit }} caractères")]
     private ?string $lastname = null;
 
-    
+    #[ORM\Column(length: 50)]
+    #[Groups(["listUsers","showUser"])]
+    #[Assert\NotBlank(message: "Le prénom est obligatoire")]
+    private ?string $firstname = null;
+
+    #[ORM\Column(length: 100)]
+    #[Groups(["showUser"])]
+    #[Assert\NotBlank(message: "L'adresse est obligatoire")]
+    private ?string $adress = null;
+
+    #[ORM\Column(length: 20)]
+    #[Groups(["showUser"])]
+    #[Assert\NotBlank(message: "Le code postal est obligatoire")]
+    private ?string $zipcode = null;
+
+    #[ORM\Column(length: 100)]
+    #[Groups(["showUser"])]
+    #[Assert\NotBlank(message: "Le nom de la ville est obligatoire")]
+    private ?string $city = null;
+
+    #[ORM\Column(length: 50)]
+    #[Groups(["listUsers","showUser"])]
+    #[Assert\NotBlank(message: "Le nom du pays est obligatoire")]
+    private ?string $country = null;
+
     #[ORM\Column(type: 'datetime_immutable')]
     #[Groups(["showUser"])]
-    
     private ?\DateTimeImmutable $createdAt = null;
-//rajouter telephone et adresse et firstname
+
     #[ORM\Column(nullable: true)]
     #[Groups(["showUser"])]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(onDelete:"CASCADE")]
-    
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(["showUser"])]
     private ?Customer $customer = null;
+
+    // #[ORM\ManyToOne(inversedBy: 'users')]
+    // #[ORM\JoinColumn(onDelete:"CASCADE")]
+    // #[ORM\JoinColumn(nullable: false)]
+    // #[Groups(["showUser"])]
+    // private ?Customer $customer = null;
+
+    
 
     public function __construct()
     {
@@ -122,10 +155,70 @@ class User
     {
         return $this->updatedAt;
     }
-
+ 
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getAdress(): ?string
+    {
+        return $this->adress;
+    }
+
+    public function setAdress(string $adress): self
+    {
+        $this->adress = $adress;
+
+        return $this;
+    }
+
+    public function getZipcode(): ?string
+    {
+        return $this->zipcode;
+    }
+
+    public function setZipcode(string $zipcode): self
+    {
+        $this->zipcode = $zipcode;
+
+        return $this;
+    }
+
+    public function getCity(): ?string
+    {
+        return $this->city;
+    }
+
+    public function setCity(string $city): self
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): self
+    {
+        $this->country = $country;
 
         return $this;
     }

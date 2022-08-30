@@ -80,8 +80,8 @@ class PhoneFixtures extends Fixture
         
         foreach($this->data as $row)
         {
-            $i = rand(0, 9);
-            $customer = $this->getReference(CustomerFixtures::CUSTOMER_REFERENCE . 'customer_' . $i);
+            // $i = rand(0, 9);
+            // $customer = $this->getReference(CustomerFixtures::CUSTOMER_REFERENCE . 'customer_' . $i);
 
 
             $phone = (new Phone())
@@ -93,8 +93,7 @@ class PhoneFixtures extends Fixture
                 ->setNfc($row['nfc'])
                 ->setModel($row['model'])
                 ->setResolution($row['resolution'])
-                ->setStorage($row['storage'])
-                ->setCustomer($customer);
+                ->setStorage($row['storage']);
 
             $manager->persist($phone);    
         }    
