@@ -1,6 +1,12 @@
-controllers:
-    resource: ../src/Controller/
+controllersV1:
+    resource: ../src/Controller/V1
     type: attribute
+    prefix: /api/V1
+
+controllersV2:
+    resource: ../src/Controller/V2
+    type: attribute
+    prefix: /api/V2
 
 kernel:
     resource: ../src/Kernel.php

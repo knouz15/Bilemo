@@ -18,11 +18,12 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-
+    
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
     #[Assert\NotBlank(message: "L' email est obligatoire")]
+    #[Groups(["listUsers","showUser"])]
     private ?string $email = null;
 
     #[ORM\Column(length: 150)]
@@ -227,4 +228,3 @@ class Customer implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 }
-

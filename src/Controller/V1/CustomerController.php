@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\V1;
 
 use App\Entity\Customer;
 use App\Repository\CustomerRepository;
@@ -21,9 +21,9 @@ class CustomerController extends AbstractController
         return new JsonResponse($jsonCustomerList, Response::HTTP_OK, [], true);
     }
 
-    #[Route('/api/customers/{id}', name: 'detailCustomer', methods: ['GET'])]
-    public function getDetailCustomer(Customer $customer, SerializerInterface $serializer) {
-        $jsonCustomer = $serializer->serialize($customer, 'json', ['groups' => 'showCustomer']);
-        return new JsonResponse($jsonCustomer, Response::HTTP_OK, [], true);
-    }
+    // #[Route('/api/customers/{id}', name: 'detailCustomer', methods: ['GET'])]
+    // public function getDetailCustomer(Customer $customer, SerializerInterface $serializer) {
+    //     $jsonCustomer = $serializer->serialize($customer, 'json', ['groups' => 'showCustomer']);
+    //     return new JsonResponse($jsonCustomer, Response::HTTP_OK, [], true);
+    // }
 } 

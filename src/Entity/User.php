@@ -15,19 +15,11 @@ class User
     #[ORM\Column]
     #[Groups(["listUsers"])]
     private ?int $id = null;
-    
-    #[ORM\Column(length: 255)]
-    #[Groups(["listUsers","showUser"])]
-    #[Assert\NotBlank(message: "Le username est obligatoire")]
-    private ?string $username = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 50)]
     #[Groups(["listUsers","showUser"])]
     #[Assert\NotBlank(message: "L'email l'auteur est obligatoire")]
     private ?string $email = null;
-
-    // #[ORM\Column(length: 255)]
-    // private ?string $password = null;
 
     #[ORM\Column(length: 50)]
     #[Groups(["listUsers","showUser"])]
@@ -50,7 +42,7 @@ class User
     #[Assert\NotBlank(message: "Le code postal est obligatoire")]
     private ?string $zipcode = null;
 
-    #[ORM\Column(length: 100)]
+    #[ORM\Column(length: 50)]
     #[Groups(["showUser"])]
     #[Assert\NotBlank(message: "Le nom de la ville est obligatoire")]
     private ?string $city = null;
@@ -69,16 +61,10 @@ class User
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["showUser"])]
-    private ?Customer $customer = null;
-
-    // #[ORM\ManyToOne(inversedBy: 'users')]
     // #[ORM\JoinColumn(onDelete:"CASCADE")]
-    // #[ORM\JoinColumn(nullable: false)]
-    // #[Groups(["showUser"])]
-    // private ?Customer $customer = null;
-
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(["listUsers","showUser"])]
+    private ?Customer $customer = null;
     
 
     public function __construct()
@@ -91,18 +77,6 @@ class User
         return $this->id;
     }
 
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
     public function getEmail(): ?string
     {
         return $this->email;
@@ -111,18 +85,6 @@ class User
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
 
         return $this;
     }
@@ -224,7 +186,7 @@ class User
     }
 
     public function getCustomer(): ?Customer
-    {
+    {   
         return $this->customer;
     }
 
