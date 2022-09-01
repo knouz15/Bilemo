@@ -22,32 +22,17 @@ class CustomerFixtures extends Fixture
         for($i=0; $i < 10; $i++)
         {
             $customer = (new Customer())
-            // ->setUsername('customer_'.$i)
             ->setEmail('customer_'.$i.'@testmail.fr')
-            ->setRoles(["ROLE_USER"])
-            ->setSociety('society_'.$i)
-            ->setPassword("password")
-            // ->setPassword($this->userPasswordHasher->hashPassword($customer, "password"))
-            // ->setPassword($this->userPasswordHasher->hashPassword($customer, 'password_' . $i))
+            // ->setRoles(["ROLE_USER"])
+            ->setSociety('society_'.$i);
+            $customer->setPassword($this->userPasswordHasher->hashPassword($customer, "password"))
             ->setPhoneNumber('00'.rand(01100000000,99999999999));
  
-            $this->addReference(self::CUSTOMER_REFERENCE.$customer->getUsername(), $customer);
+            $this->addReference(self::CUSTOMER_REFERENCE.$i, $customer);
 
-            $manager->persist($customer); 
-            
-            // Création d'un admin
-            // $admin = new Customer();
-            // $admin->setEmail('admin@mymail.fr');
-            // $admin->setRoles(["ROLE_ADMIN"]);
-            // $admin->setSociety('My Society');
-            // $admin->setPassword($this->userPasswordHasher->hashPassword($admin, "password"));
-            // $admin->setPhoneNumber('0033111111111');
-
-            // $this->addReference(self::CUSTOMER_REFERENCE.$admin->getUsername(), $admin);
-
-            // $manager->persist($admin);
+            $manager->persist($customer);   
          }
 
         $manager->flush();
-     }
+    }
 } 
