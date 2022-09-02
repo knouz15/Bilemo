@@ -14,7 +14,7 @@ class UserVoter extends Voter
     // these strings are just invented: you can use anything
     const VIEW = 'view';
     const DELETE = 'delete';
-
+ 
     protected function supports(string $attribute, mixed $subject): bool
     {
         // if the attribute isn't one we support, return false
@@ -30,7 +30,7 @@ class UserVoter extends Voter
         return true;
     }
 
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $user, TokenInterface $token): bool
     {
         // $customer = $token->getCustomer();
         //$this->storeTokenInSession($token);
@@ -44,25 +44,14 @@ class UserVoter extends Voter
 
         // you know $subject is a User object, thanks to `supports()`
         /** @var User $user */
-        $user = $subject;
+        // $user = $subject;
 
         switch ($attribute) {
             case self::VIEW:// on vérifie si on peut voir le détail du user
-                return $this->canView($user, $customer);
+                
             case self::DELETE:// on vérifie si on peut supprimer
-                return $this->canDelete($user, $customer);
-        }
+                return $customer === $user->getCustomer();        }
 
         throw new \LogicException('This code should not be reached!');
-    }
-
-    private function canView(User $user, Customer $customer): bool
-    {   // Le propriétaire lié au user peut le voir
-        return $customer === $user->getCustomer();
-    }
-
-    private function canDelete(User $user, Customer $customer): bool
-    {   // Le propriétaire lié au user peut le supprimer
-        return $customer === $user->getCustomer();
     }
 }

@@ -28,6 +28,21 @@ class PhoneController extends AbstractController
         // TagAwareCacheInterface $cachePool
     ): JsonResponse
     { 
+        // // create a Response with an ETag and/or a Last-Modified header
+        // $response = new Response();
+        // $response->setEtag($phone->computeETag());
+        // $response->setLastModified($phone->getPublishedAt());
+
+        // // Set response as public. Otherwise it will be private by default.
+        // $response->setPublic();
+
+        // // Check that the Response is not modified for the given Request
+        // if ($response->isNotModified($request)) {
+        //     // return the 304 Response immediately
+        //     return $response;
+        // }
+
+
         $donnees = $phoneRepository->findAll();
         $pagination = $paginator->paginate($donnees,$request->query->getInt('page',1),5);
         $response = 
