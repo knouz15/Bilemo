@@ -7,7 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
+// #[UniqueEntity(fields: ['email'], message: 'Un utilisateur ayant cet email existe')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+
 class User
 {
     #[ORM\Id]
@@ -16,7 +18,7 @@ class User
     #[Groups(["listUsers"])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 50)]
+    #[ORM\Column(length: 50, unique: true)]
     #[Groups(["listUsers","showUser"])]
     #[Assert\NotBlank(message: "L'email l'auteur est obligatoire")]
     private ?string $email = null;
@@ -56,9 +58,9 @@ class User
     #[Groups(["showUser"])]
     private ?\DateTimeImmutable $createdAt = null;
 
-    #[ORM\Column(nullable: true)]
-    #[Groups(["showUser"])]
-    private ?\DateTimeImmutable $updatedAt = null;
+    // #[ORM\Column(nullable: true)]
+    // #[Groups(["showUser"])]
+    // private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     // #[ORM\JoinColumn(onDelete:"CASCADE")]
@@ -113,17 +115,17 @@ class User
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
+    // public function getUpdatedAt(): ?\DateTimeImmutable
+    // {
+    //     return $this->updatedAt;
+    // }
  
-    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
-    {
-        $this->updatedAt = $updatedAt;
+    // public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
+    // {
+    //     $this->updatedAt = $updatedAt;
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
     public function getFirstname(): ?string
     {
