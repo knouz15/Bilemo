@@ -4,6 +4,9 @@ namespace App\Controller\V1;
 
 use App\Entity\User;
 use App\Entity\Customer;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security as NelmioSecurity;
+use OpenApi\Annotations as OA;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -25,7 +28,28 @@ class UserController extends AbstractController
 {
 
     //avec pagination: https://127.0.0.1:8000/api/userss?page=3&limit=2
-    //le cache: 
+    /**
+     * List the rewards of the specified user.
+     *
+     * This call takes into account all confirmed awards, but not pending or refused awards.
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns the rewards of an user",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=App\Entity\User::class, groups={"listUsers"}))
+     *     )
+     * )
+     * @OA\Parameter(
+     *     name="order",
+     *     in="query",
+     *     description="The field used to order rewards",
+     *     @OA\Schema(type="string")
+     * )
+     * @OA\Tag(name="rewards")
+     * @NelmioSecurity(name="Bearer")
+     */
     #[Route('/users', name: 'users', methods: ['GET'])]
     public function getAllUsers(
         UserRepository $userRepository, 

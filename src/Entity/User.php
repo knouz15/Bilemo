@@ -65,7 +65,6 @@ class User
     #[ORM\ManyToOne(inversedBy: 'users')]
     // #[ORM\JoinColumn(onDelete:"CASCADE")]
     #[ORM\JoinColumn(nullable: false)]
-    #[Groups(["listUsers","showUser"])]
     private ?Customer $customer = null;
     
 
