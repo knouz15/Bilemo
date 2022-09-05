@@ -3,6 +3,9 @@
 namespace App\Controller\V1;
 
 use App\Entity\Phone;
+use Nelmio\ApiDocBundle\Annotation\Model;
+use Nelmio\ApiDocBundle\Annotation\Security;
+use OpenApi\Attributes as OA;
 use App\Repository\PhoneRepository;
 use Symfony\Contracts\Cache\ItemInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -19,13 +22,29 @@ class PhoneController extends AbstractController
 { 
 
     //pagination : https://127.0.0.1:8000/api/users?page=3
+    
     #[Route('/phones', name: 'phones', methods: ['GET'])]
+    
+    #[OA\Response(
+        response: 200,
+        description: 'Retourne la liste des phones',
+        content: new OA\JsonContent(
+            type: 'array', 
+            items: new OA\Items(ref: new Model(type: Phone::class, groups: ['listPhonesV1']))
+        )
+    )]
+    #[OA\Parameter(
+        name: 'page',
+        in: 'query',
+        description: 'Numéro de la page à afficher',
+        schema: new OA\Schema(type: 'integer')
+    )]
+    #[OA\Tag(name: 'phones')]
+    #[Security(name: 'Bearer')]
     public function getAllPhones(
         PhoneRepository $phoneRepository,
-        // SerializerInterface $serializer,
         Request $request, 
         PaginatorInterface $paginator
-        // TagAwareCacheInterface $cachePool
     ): JsonResponse
     { 
         // // create a Response with an ETag and/or a Last-Modified header
@@ -58,6 +77,17 @@ class PhoneController extends AbstractController
 
 
     #[Route('/phones/{id}', name: 'detailPhone', methods: ['GET'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Retourne le détail d\'un phone',
+        content: new Model(type: Phone::class, groups: ['showPhonesV1'])
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'Id introuvable'
+    )]
+    #[OA\Tag(name: 'phones')]
+    #[Security(name: 'Bearer')]
     public function getDetailPhone(Phone $phone, SerializerInterface $serializer): JsonResponse {
 
         $jsonPhone = $serializer->serialize($phone, 'json', ['groups' => ['showPhoneV1']]);        
