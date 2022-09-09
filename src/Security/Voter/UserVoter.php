@@ -11,7 +11,6 @@ use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 class UserVoter extends Voter
 {
     
-    // these strings are just invented: you can use anything
     const VIEW = 'view';
     const DELETE = 'delete';
  

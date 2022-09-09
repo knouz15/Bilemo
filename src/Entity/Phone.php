@@ -80,6 +80,7 @@ class Phone
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -219,19 +220,6 @@ class Phone
 
         return $this;
     }
-
-    // public function getCustomer(): ?Customer
-    // {
-        
-    //     return $this->customer;
-    // }
-
-    // public function setCustomer(?Customer $customer): self
-    // {
-    //     $this->customer = $customer;
-
-    //     return $this;
-    // }
 
     public function getComment(): ?string
     {
