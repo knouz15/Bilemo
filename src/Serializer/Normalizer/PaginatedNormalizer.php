@@ -2,16 +2,17 @@
 
 namespace App\Serializer\Normalizer;
 
-use App\Entity\User;
+use App\Entity\Phone;
+// use App\Paginated;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class UserNormalizer implements ContextAwareNormalizerInterface
+class PaginatedNormalizer implements ContextAwareNormalizerInterface
 {
     
     
-    private const ALREADY_CALLED = 'USER_NORMALIZER_ALREADY_CALLED';
+    private const ALREADY_CALLED = 'PAGINATED_NORMALIZER_ALREADY_CALLED';
   
     
     public function __construct(
@@ -29,15 +30,23 @@ class UserNormalizer implements ContextAwareNormalizerInterface
         $context[self::ALREADY_CALLED] = true;
         $data = $this->objectNormalizer->normalize($object, $format, $context);
 
-        $data['_links']['self'] = $this->urlGenerator->generate('detailUser', [
+        $data['_links']['self'] = $this->urlGenerator->generate('page', [
+            
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        $data['_links']['FirstPage'] = $this->urlGenerator->generate(1, [
+            
+        ], UrlGeneratorInterface::ABSOLUTE_URL);
+        
+        $data['_links']['NextPage'] = $this->urlGenerator->generate('page'+1, [
             'id' => $object->getId(),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $data['_links']['delete'] = $this->urlGenerator->generate('deleteUser', [
+        $data['_links']['PreviousPage'] = $this->urlGenerator->generate('page'-1, [
             'id' => $object->getId(),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $data['_links']['add'] = $this->urlGenerator->generate('createUser', [
+        $data['_links']['LastPage'] = $this->urlGenerator->generate('pageRange', [
             
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
@@ -50,7 +59,7 @@ class UserNormalizer implements ContextAwareNormalizerInterface
         if (isset($context[self::ALREADY_CALLED])) {
             return false;
         }
-        return $data instanceof User ;//\App\Entity\User;
+        return $data instanceof Phone ;
     }
 
     public function hasCacheableSupportsMethod(): bool

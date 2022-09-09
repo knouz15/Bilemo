@@ -5,4 +5,4 @@ Disallow: /nogooglebot/
 User-agent: *
 Allow: /
 
-Sitemap: http://www.snowtricks.com/sitemap.xml
+Sitemap: http://www.api_bilemo/sitemap.xml

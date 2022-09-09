@@ -1,6 +1,6 @@
 {
-    "name": "Snowtricks",
-    "short_name": "Snowtricks",
+    "name": "BilemoApi",
+    "short_name": "Api rest",
     "lang": "fr",
     "start_url": "/",
     "display": "standalone",

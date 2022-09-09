@@ -27,27 +27,27 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UserController extends AbstractController
 {
 
-    //avec pagination: https://127.0.0.1:8000/api/userss?page=3&limit=2
+    //avec pagination: https://127.0.0.1:8000/api/users?page=3&limit=2
     /**
-     * List the rewards of the specified user.
+     * List of the users.
      *
-     * This call takes into account all confirmed awards, but not pending or refused awards.
+     * This call takes into account all authenticated users.
      *
      * @OA\Response(
      *     response=200,
-     *     description="Returns the rewards of an user",
+     *     description="Returns the list of the users",
      *     @OA\JsonContent(
      *        type="array",
      *        @OA\Items(ref=@Model(type=App\Entity\User::class, groups={"listUsers"}))
      *     )
      * )
      * @OA\Parameter(
-     *     name="order",
+     *     name="page",
      *     in="query",
-     *     description="The field used to order rewards",
+     *     description="The field used to order users",
      *     @OA\Schema(type="string")
      * )
-     * @OA\Tag(name="rewards")
+     * @OA\Tag(name="users")
      * @NelmioSecurity(name="Bearer")
      */
     #[Route('/users', name: 'users', methods: ['GET'])]
@@ -56,39 +56,67 @@ class UserController extends AbstractController
         // SerializerInterface $serializer,
         Request $request, 
         PaginatorInterface $paginator
-        // TagAwareCacheInterface $cachePool
+        
         ): JsonResponse
     {
-        // $page = $request->get('page', 1);
-        // $limit = $request->get('limit', 3);
-
-        // $idCache = "getAllUsers-" . $page . "-" . $limit;
-        // $userList = $cachePool->get($idCache, function (ItemInterface $item) use ($userRepository, $page, $limit) {
-        //     echo("L'element n'est pas encore en cache");
-        //     $item->tag("usersCache");
-        //     return $userRepository->findAllWithPagination($page, $limit);
-        // });
-        // $jsonUserList = $serializer->serialize($userList, 'json', ['groups' => 'listUsers']);
-        // return new JsonResponse($jsonUserList, Response::HTTP_OK, [], true);
+        
         $donnees = $userRepository->findBy(['customer'=>$this->getUser()]);
-        $pagination = $paginator->paginate($donnees,$request->query->getInt('page',1),5);
+        $page = $request->query->getInt("page", 1);
+        $pagination = $paginator->paginate($donnees,$page,5);
+        // $data = $pagination->getPaginationData();
+        
+        $total = $pagination->getTotalItemCount();
         $response = 
         $this->json(
             // $userRepository->findAll(),
             $pagination,
             Response::HTTP_OK,
             ['Content-Type' => 'application/json'],
-            ['groups' => 'listUsers']);
+            ['groups' => ['listUsers'],
+
+        ]
+    );
         
         return $response;
 
     }
     
+
+    /**
+     * Detail of an user.
+     *
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns the details of the user",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=App\Entity\User::class, groups={"showUser"}))
+     *     )
+     * )
+     * @OA\Tag(name="user")
+     * @NelmioSecurity(name="Bearer")
+     */
     #[Route('/users/{id}', name: 'detailUser', methods: ['GET'])]
     public function getDetailUser(
         User $user, 
+        Request $request,
         SerializerInterface $serializer
         ): JsonResponse {
+             // create a Response with an ETag and/or a Last-Modified header
+        $response = new Response();
+        // $response->setEtag($phone->computeETag());
+        // $response->setEtag($phone->getModel(),true);
+        $response->setLastModified($user->getUpdatedAt());
+
+        // Set response as public. Otherwise it will be private by default.
+        $response->setPublic();
+
+        // Check that the Response is not modified for the given Request
+        if ($response->isNotModified($request)) {
+            // return the 304 Response immediately
+            return $response;
+        }
         $this->denyAccessUnlessGranted('view', $user, "Denied! Cet utilisateur ne fait pas partie des votres.");
         $jsonUser = $serializer->serialize($user, 'json', ['groups' => 'showUser']);
         return new JsonResponse($jsonUser, Response::HTTP_OK, [], true);
@@ -149,7 +177,7 @@ class UserController extends AbstractController
 
         $jsonUser = $serializer->serialize($user, 'json', ['groups' => 'listUsers']);
         $location = $urlGenerator->generate('detailUser', ['id' => $user->getId()], UrlGeneratorInterface::ABSOLUTE_URL);//on calcule l'url sur laquelle on teste si l'elment a vraiment été créé
-        return new JsonResponse($jsonUser, Response::HTTP_CREATED, ["Location" => $location], true);//et on retrouve cette url sous le nom lacation ds le header de la réponse de la création	
+        return new JsonResponse($jsonUser, Response::HTTP_CREATED, ["Location" => $location], true);//et on retrouve cette url sous le nom location ds le header de la réponse de la création	
     }
    
 }

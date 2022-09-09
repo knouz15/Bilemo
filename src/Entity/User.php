@@ -58,9 +58,9 @@ class User
     #[Groups(["showUser"])]
     private ?\DateTimeImmutable $createdAt = null;
 
-    // #[ORM\Column(nullable: true)]
-    // #[Groups(["showUser"])]
-    // private ?\DateTimeImmutable $updatedAt = null;
+    #[ORM\Column(nullable: true)]
+    #[Groups(["showUser"])]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]
     // #[ORM\JoinColumn(onDelete:"CASCADE")]
@@ -71,6 +71,7 @@ class User
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int
@@ -114,17 +115,17 @@ class User
         return $this;
     }
 
-    // public function getUpdatedAt(): ?\DateTimeImmutable
-    // {
-    //     return $this->updatedAt;
-    // }
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
  
-    // public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
-    // {
-    //     $this->updatedAt = $updatedAt;
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
 
-    //     return $this;
-    // }
+        return $this;
+    }
 
     public function getFirstname(): ?string
     {

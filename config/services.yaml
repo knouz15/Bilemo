@@ -24,3 +24,9 @@ services:
     # please note that last definitions always *replace* previous ones
     App\Serializer\Normalizer\UserNormalizer:
         tags: ['serializer.normalizer']
+
+    App\Serializer\Normalizer\PhoneNormalizer:
+        tags: ['serializer.normalizer']
+
+    App\Serializer\Normalizer\PaginatedNormalizer:
+        tags: ['serializer.normalizer']
