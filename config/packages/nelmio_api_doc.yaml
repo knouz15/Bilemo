@@ -25,9 +25,8 @@ nelmio_api_doc:
                                     schema:
                                         $ref: '#/components/schemas/Token'
                         '400':
-                            description: Données invalides
-                    security: []
-
+                            description: Invalid Credentials
+                    security: []  # car le login est à accès public , pas sécurisé
         components:
             schemas:
                 Token:

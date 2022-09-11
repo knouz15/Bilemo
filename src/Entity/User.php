@@ -20,7 +20,7 @@ class User
 
     #[ORM\Column(length: 50, unique: true)]
     #[Groups(["listUsers","showUser"])]
-    #[Assert\NotBlank(message: "L'email l'auteur est obligatoire")]
+    #[Assert\NotBlank(message: "L'email est obligatoire")]
     private ?string $email = null;
 
     #[ORM\Column(length: 50)]
