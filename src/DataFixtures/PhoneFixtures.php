@@ -30,6 +30,54 @@ class PhoneFixtures extends Fixture
         [
             'brand' => 'Samsung',
             'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo eveniet quo repellendus, deserunt iste facilis rem saepe quaerat natus perferendis obcaecati veniam soluta quisquam, est pariatur recusandae. Dolorem, laudantium dignissimos.',
+            'price' => 1049.90,
+            'color' => 'grey',
+            'weight' => 198.00,
+            'nfc' => true,
+            'model' => 'S10+',
+            'resolution' => '1600x720 pixels',
+            'storage' => '128 Go'
+        ],
+
+        [
+            'brand' => 'Samsung',
+            'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo eveniet quo repellendus, deserunt iste facilis rem saepe quaerat natus perferendis obcaecati veniam soluta quisquam, est pariatur recusandae. Dolorem, laudantium dignissimos.',
+            'price' => 1049.90,
+            'color' => 'red',
+            'weight' => 198.00,
+            'nfc' => true,
+            'model' => 'S10+',
+            'resolution' => '1600x720 pixels',
+            'storage' => '128 Go'
+        ],
+
+        [
+            'brand' => 'Samsung',
+            'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo eveniet quo repellendus, deserunt iste facilis rem saepe quaerat natus perferendis obcaecati veniam soluta quisquam, est pariatur recusandae. Dolorem, laudantium dignissimos.',
+            'price' => 1049.90,
+            'color' => 'blue',
+            'weight' => 198.00,
+            'nfc' => true,
+            'model' => 'S10+',
+            'resolution' => '1600x720 pixels',
+            'storage' => '128 Go'
+        ],
+
+        [
+            'brand' => 'Samsung',
+            'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo eveniet quo repellendus, deserunt iste facilis rem saepe quaerat natus perferendis obcaecati veniam soluta quisquam, est pariatur recusandae. Dolorem, laudantium dignissimos.',
+            'price' => 1049.90,
+            'color' => 'black',
+            'weight' => 198.00,
+            'nfc' => true,
+            'model' => 'S10+',
+            'resolution' => '1600x720 pixels',
+            'storage' => '128 Go'
+        ],
+
+        [
+            'brand' => 'Samsung',
+            'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo eveniet quo repellendus, deserunt iste facilis rem saepe quaerat natus perferendis obcaecati veniam soluta quisquam, est pariatur recusandae. Dolorem, laudantium dignissimos.',
             'price' => 1290.90,
             'color' => 'Black',
             'weight' => 190.00,
