@@ -27,11 +27,11 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class UserController extends AbstractController
 {
 
-    //avec pagination: https://127.0.0.1:8000/api/users?page=3&limit=2
+    //avec pagination: https://127.0.0.1:8000/api/V1/users?page=1
     /**
      * List of the users.
      *
-     * This call takes into account all authenticated users.
+     * This call takes into account all customer's users.
      *
      * @OA\Response(
      *     response=200,
@@ -41,13 +41,18 @@ class UserController extends AbstractController
      *        @OA\Items(ref=@Model(type=App\Entity\User::class, groups={"listUsers"}))
      *     )
      * )
+     * @OA\Response(
+     *     response=403,
+     *     description="Invalid Credentials or invalid Token",
+     *     
+     * )
      * @OA\Parameter(
      *     name="page",
      *     in="query",
-     *     description="The field used to order users",
+     *     description="Pagination to order users",
      *     @OA\Schema(type="string")
      * )
-     * @OA\Tag(name="users")
+     * @OA\Tag(name="Users")
      * @NelmioSecurity(name="Bearer")
      */
     #[Route('/users', name: 'users', methods: ['GET'])]
@@ -81,7 +86,6 @@ class UserController extends AbstractController
 
     }
     
-
     /**
      * Detail of an user.
      *
@@ -94,7 +98,18 @@ class UserController extends AbstractController
      *        @OA\Items(ref=@Model(type=App\Entity\User::class, groups={"showUser"}))
      *     )
      * )
-     * @OA\Tag(name="user")
+     * @OA\Response(
+     *     response=404,
+     *     description="Id not found",
+     *     
+     * )
+     * 
+     * @OA\Response(
+     *     response=403,
+     *     description="Invalid Credentials or invalid Token",
+     *     
+     * )
+     * @OA\Tag(name="Users")
      * @NelmioSecurity(name="Bearer")
      */
     #[Route('/users/{id}', name: 'detailUser', methods: ['GET'])]
@@ -122,9 +137,29 @@ class UserController extends AbstractController
         return new JsonResponse($jsonUser, Response::HTTP_OK, [], true);
     }
 
-    
+    /**
+     * Delete an user.
+     *
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Delete the user",
+     * )
+     * @OA\Response(
+     *     response=404,
+     *     description="Id not found",
+     * )
+     * 
+     * @OA\Response(
+     *     response=403,
+     *     description="Invalid Credentials or invalid Token",
+     *     
+     * )
+     * @OA\Tag(name="Users")
+     * @NelmioSecurity(name="Bearer")
+     */
     #[Route('/users/{id}', name: 'deleteUser', methods: ['DELETE'])]
-    // #[IsGranted('ROLE_USER', message: 'Vous n\'avez pas les droits pour supprimer un utilisateur')]
+    #[IsGranted('ROLE_USER', message: 'Vous n\'avez pas les droits pour supprimer un utilisateur')]
     public function deleteUser(
         User $user, 
         EntityManagerInterface $em
@@ -137,7 +172,7 @@ class UserController extends AbstractController
 
     // Exemple de données :
     // {
-    //   "username":"toto@y.fr",
+    //   "email":"toto@y.fr",
     //   "lastName": "Jolie",
     //   "firstname": "Laure",
     //   "adress": "1 rue belleville",
@@ -146,6 +181,30 @@ class UserController extends AbstractController
     //   "country": "OZ"
     //  }
     // 
+    /**
+     * Create an user.
+     *
+     *
+     * @OA\Response(
+     *     response=200,
+     *     description="Returns the created user",
+     *     @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref=@Model(type=App\Entity\User::class, groups={"listUsers"}))
+     *     )
+     * )
+     *  @OA\Response(
+     *     response=400,
+     *     description="Invalid form inputs",
+     * )
+     * *  * @OA\Response(
+     *     response=403,
+     *     description="Invalid Credentials or invalid Token",
+     *     
+     * )
+     * @OA\Tag(name="Users")
+     * @NelmioSecurity(name="Bearer")
+     */
     #[Route('/users', name: 'createUser', methods: ['POST'])]
     // #[IsGranted('', message: 'Vous n\'avez pas les droits pour créer un utilisateur')]
     public function createUser(

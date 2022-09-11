@@ -23,7 +23,7 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class PhoneController extends AbstractController
 { 
 
-    //pagination : https://127.0.0.1:8000/api/phones?page=3
+    //pagination: https://127.0.0.1:8000/api/V1/phones?page=3
     /**
      * List of the phones.
      *
@@ -36,17 +36,20 @@ class PhoneController extends AbstractController
      *        @OA\Items(ref=@Model(type=App\Entity\Phone::class, groups={"listPhonesV1"}))
      *     )
      * )
+     * * @OA\Response(
+     *     response=403,
+     *     description="Invalid Credentials or invalid Token",
+     *     
+     * )
      * @OA\Parameter(
      *     name="page",
      *     in="query",
-     *     description="The field used to order phones",
+     *     description="Pagination to order phones",
      *     @OA\Schema(type="string")
      * )
-     * @OA\Tag(name="phones")
+     * @OA\Tag(name="Phones")
      * @NelmioSecurity(name="Bearer")
      */
-//   @Cache(lastModified="phone.getUpdatedAt()", Etag="'Phone' ~ phone.getId() ~ phone.getUpdatedAt().getTimestamp()")
-
     #[Route('/phones', name: 'phones', methods: ['GET'])]
     public function getAllPhones(
         PhoneRepository $phoneRepository,
@@ -54,12 +57,8 @@ class PhoneController extends AbstractController
         PaginatorInterface $paginator
     ): JsonResponse
     { 
-      
         $donnees = $phoneRepository->findAll();
-        $pagination = $paginator->paginate($donnees,$request->query->getInt("page", 1),5); //page current, page 1 default, 5: limit per page
-        // dd($pagination);
-        
-        $total = $pagination->getTotalItemCount();
+        $pagination = $paginator->paginate($donnees,$request->query->getInt('page',1),2);
         $response = 
         $this->json(
             // $phoneRepository->findAll(),
@@ -70,9 +69,11 @@ class PhoneController extends AbstractController
         
         return $response;
     }
+//   @Cache(lastModified="phone.getUpdatedAt()", Etag="'Phone' ~ phone.getId() ~ phone.getUpdatedAt().getTimestamp()")
+
+    
 /**
-     * Show one phone
-     *Detail of an phone.
+     * Detail of an phone.
      *
      *
      * @OA\Response(
@@ -83,7 +84,18 @@ class PhoneController extends AbstractController
      *        @OA\Items(ref=@Model(type=App\Entity\Phone::class, groups={"showPhoneV1"}))
      *     )
      * )
-     * @OA\Tag(name="phone")
+     * * @OA\Response(
+     *     response=404,
+     *     description="Id not found",
+     *     
+     * )
+     * 
+     *  * @OA\Response(
+     *     response=403,
+     *     description="Invalid Credentials or invalid Token",
+     *     
+     * )
+     * @OA\Tag(name="Phones")
      * @NelmioSecurity(name="Bearer")
      *
      * @param Phones $phone
