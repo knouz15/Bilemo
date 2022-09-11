@@ -2,7 +2,7 @@
 
 namespace App\Serializer\Normalizer;
 
-use App\Entity\Phone;
+use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
 // use App\Paginated;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -23,32 +23,40 @@ class PaginatedNormalizer implements ContextAwareNormalizerInterface
     }
 
         /**
-     * @param User $object
+     * @param SlidingPagination $object
      */
     public function normalize($object, string $format = null, array $context = []): array
     {
         $context[self::ALREADY_CALLED] = true;
-        $data = $this->objectNormalizer->normalize($object, $format, $context);
-
-        $data['_links']['self'] = $this->urlGenerator->generate('page', [
-            
+        $data = [];
+        foreach($object->getItems() as $item)
+        {
+            $data['items'] []= $this->objectNormalizer->normalize($item, $format, $context);
+        }
+    
+        $data['_links']['FirstPage'] = $this->urlGenerator->generate($object->getRoute(), [
+            'page' => 1,
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $data['_links']['FirstPage'] = $this->urlGenerator->generate(1, [
-            
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
-        
-        $data['_links']['NextPage'] = $this->urlGenerator->generate('page'+1, [
-            'id' => $object->getId(),
+        if ($object->getCurrentPageNumber() > 1)
+            $data['_links']['PreviousPage'] = $this->urlGenerator->generate($object->getRoute(), [
+            'page' => $object->getCurrentPageNumber()-1,
+            ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        $data['_links']['CurrentPage'] = $this->urlGenerator->generate($object->getRoute(), [
+            'page' => $object->getCurrentPageNumber(),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $data['_links']['PreviousPage'] = $this->urlGenerator->generate('page'-1, [
-            'id' => $object->getId(),
+        if ($object->getCurrentPageNumber() < $object->getPageCount())
+            $data['_links']['NextPage'] = $this->urlGenerator->generate($object->getRoute(), [
+            'page' => $object->getCurrentPageNumber()+1,
+            ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+        $data['_links']['LastPage'] = $this->urlGenerator->generate($object->getRoute(), [
+            'page' => $object->getPageCount(),
         ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-        $data['_links']['LastPage'] = $this->urlGenerator->generate('pageRange', [
-            
-        ], UrlGeneratorInterface::ABSOLUTE_URL);
+        $data['_totalItems'] = $object->getTotalItemCount();
 
         return $data;
     }
@@ -59,7 +67,7 @@ class PaginatedNormalizer implements ContextAwareNormalizerInterface
         if (isset($context[self::ALREADY_CALLED])) {
             return false;
         }
-        return $data instanceof Phone ;
+        return $data instanceof  SlidingPagination;
     }
 
     public function hasCacheableSupportsMethod(): bool

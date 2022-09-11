@@ -56,21 +56,17 @@ class PhoneController extends AbstractController
     { 
       
         $donnees = $phoneRepository->findAll();
-        $page = $request->query->getInt("page", 1);
-        $pagination = $paginator->paginate($donnees,$page, //page current, page 1 default
-        5); //limit per page
+        $pagination = $paginator->paginate($donnees,$request->query->getInt("page", 1),5); //page current, page 1 default, 5: limit per page
         // dd($pagination);
-        // $data = $pagination->getPaginationData();
         
         $total = $pagination->getTotalItemCount();
-        $response = $this->json(
+        $response = 
+        $this->json(
             // $phoneRepository->findAll(),
             $pagination,
             Response::HTTP_OK,
             ['Content-Type' => 'application/json'],
-            ['groups' => ['listPhonesV1'],]
-            // ['groups' => 'listPhonesV1' ]
-        );
+            ['groups' => ['listPhonesV1']]);
         
         return $response;
     }
