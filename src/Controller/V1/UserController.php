@@ -58,26 +58,22 @@ class UserController extends AbstractController
     public function getAllUsers(
         UserRepository $userRepository, 
         Request $request, 
-        PaginatorInterface $paginator
-        
+        PaginatorInterface $paginator,
+        SerializerInterface $serializer
         ): JsonResponse
     {
-        
         $donnees = $userRepository->findBy(['customer'=>$this->getUser()]);
         $page = $request->query->getInt("page", 1);
         $pagination = $paginator->paginate($donnees,$page,5);
-        $response = 
-        $this->json(
-            $pagination,
-            Response::HTTP_OK,
-            ['Content-Type' => 'application/json'],
-            ['groups' => ['listUsers'],
-
-        ]
-    );
+        $response = new JsonResponse();
+        $response->setEtag(md5(serialize($pagination)));
+        $response->setPublic();
+        $response->isNotModified($request);
         
+        $jsonPhones = $serializer->serialize($pagination,'json', ['groups' => ['listUsers']]);
+            
+        $response->setContent($jsonPhones);        
         return $response;
-
     }
     
     /**
@@ -112,23 +108,17 @@ class UserController extends AbstractController
         Request $request,
         SerializerInterface $serializer
         ): JsonResponse {
-             // create a Response with an ETag and/or a Last-Modified header
-        $response = new Response();
-        // $response->setEtag($phone->computeETag());
-        // $response->setEtag($phone->getModel(),true);
+        $response = new JsonResponse();
+        $response->setEtag(md5(serialize($user)));
         $response->setLastModified($user->getUpdatedAt());
-
-        // Set response as public. Otherwise it will be private by default.
         $response->setPublic();
-
-        // Check that the Response is not modified for the given Request
         if ($response->isNotModified($request)) {
-            // return the 304 Response immediately
             return $response;
         }
         $this->denyAccessUnlessGranted('view', $user, "Denied! Cet utilisateur ne fait pas partie des votres.");
         $jsonUser = $serializer->serialize($user, 'json', ['groups' => 'showUser']);
-        return new JsonResponse($jsonUser, Response::HTTP_OK, [], true);
+        $response->setContent($jsonUser);
+         return $response;
     }
 
     /**
@@ -200,7 +190,6 @@ class UserController extends AbstractController
      * @NelmioSecurity(name="Bearer")
      */
     #[Route('/users', name: 'createUser', methods: ['POST'])]
-    // #[IsGranted('', message: 'Vous n\'avez pas les droits pour créer un utilisateur')]
     public function createUser(
         Security $security,
         Request $request, 
@@ -210,14 +199,9 @@ class UserController extends AbstractController
         ValidatorInterface $validator,
         ): JsonResponse {
             
-        // $this->denyAccessUnlessGranted('create', $user);
         $user = $serializer->deserialize($request->getContent(), User::class, 'json');
         $errors = $validator->validate($user, null, ['user']);
-        // $user->setCustomer($customer);
         $user->setCustomer($security->getUser());
-        // $customer->setUpdatedAt(new \DateTimeImmutable());
-
-        // $em->persist($customer);
         $em->persist($user);
         $em->flush();
 
@@ -234,4 +218,3 @@ class UserController extends AbstractController
     }
    
 }
-

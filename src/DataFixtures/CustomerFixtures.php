@@ -17,7 +17,7 @@ class CustomerFixtures extends Fixture
         $this->userPasswordHasher = $userPasswordHasher;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): Void
     {
         for($i=0; $i < 10; $i++)
         {

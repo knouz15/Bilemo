@@ -56,20 +56,23 @@ class PhoneController extends AbstractController
     public function getAllPhones(
         PhoneRepository $phoneRepository,
         Request $request, 
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        SerializerInterface $serializer
     ): JsonResponse
     { 
         $donnees = $phoneRepository->findAll();
         $pagination = $paginator->paginate($donnees,$request->query->getInt('page',1),2);
-        $response = 
-        $this->json(
-            $pagination,
-            Response::HTTP_OK,
-            ['Content-Type' => 'application/json'],
-            ['groups' => ['listPhonesV1']]);
+        $response = new JsonResponse();
+        $response->setEtag(md5(serialize($pagination)));
+        $response->setPublic();
+        $response->isNotModified($request);
         
+        $jsonPhones = 
+            $serializer->serialize($pagination,'json', ['groups' => ['listPhonesV1']]);
+            
+            $response->setContent($jsonPhones);
         return $response;
-        
+
     }
 
     
