@@ -53,8 +53,4 @@ class UserNormalizer implements ContextAwareNormalizerInterface
         return $data instanceof User ;//\App\Entity\User;
     }
 
-    public function hasCacheableSupportsMethod(): bool
-    {
-        return true;
-    }
 }
