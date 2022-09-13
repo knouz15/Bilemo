@@ -46,8 +46,4 @@ class PhoneNormalizer implements ContextAwareNormalizerInterface
         return $data instanceof Phone ;//\App\Entity\Phone;
     }
 
-    public function hasCacheableSupportsMethod(): bool
-    {
-        return true;
-    }
 }

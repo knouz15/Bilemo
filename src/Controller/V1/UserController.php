@@ -16,7 +16,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
-// use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
@@ -58,7 +57,6 @@ class UserController extends AbstractController
     #[Route('/users', name: 'users', methods: ['GET'])]
     public function getAllUsers(
         UserRepository $userRepository, 
-        // SerializerInterface $serializer,
         Request $request, 
         PaginatorInterface $paginator
         
@@ -68,12 +66,8 @@ class UserController extends AbstractController
         $donnees = $userRepository->findBy(['customer'=>$this->getUser()]);
         $page = $request->query->getInt("page", 1);
         $pagination = $paginator->paginate($donnees,$page,5);
-        // $data = $pagination->getPaginationData();
-        
-        $total = $pagination->getTotalItemCount();
         $response = 
         $this->json(
-            // $userRepository->findAll(),
             $pagination,
             Response::HTTP_OK,
             ['Content-Type' => 'application/json'],

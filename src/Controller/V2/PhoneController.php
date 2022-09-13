@@ -14,7 +14,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use ContainerTk6IcmD\PaginatorInterface_82dac15;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
@@ -34,6 +33,11 @@ class PhoneController extends AbstractController
      *        @OA\Items(ref=@Model(type=App\Entity\Phone::class, groups={"listPhonesV2"}))
      *     )
      * )
+     * @OA\Response(
+     *     response=403,
+     *     description="Invalid Credentials or invalid Token",
+     *     
+     * )
      * @OA\Parameter(
      *     name="page",
      *     in="query",
@@ -42,15 +46,30 @@ class PhoneController extends AbstractController
      * )
      * @OA\Tag(name="Phones")
      * @NelmioSecurity(name="Bearer")
+     
      */
 
-    #[Route('/phones', name: 'phones', methods: ['GET'])]
+    #[Route('/phones', name: 'phonesV2', methods: ['GET'])]
     public function getAllPhones(
         PhoneRepository $phoneRepository,
         Request $request, 
         PaginatorInterface $paginator
     ): JsonResponse
-    { 
+    {   // create a Response with an ETag and/or a Last-Modified header 
+        // $response = new Response();
+        // $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
+        // $response->setEtag(md5('myetag-'.$phone->getId().$phone->getUpdatedAt()->getTimestamp()));
+        // $response->setEtag($phone->getModel(),true);
+        // $response->setLastModified($phone->getUpdatedAt());
+// dd($response);
+        // Set response as public. Otherwise it will be private by default.
+        // $response->setPublic();
+
+        // Check that the Response is not modified for the given Request
+        // if ($response->isNotModified($request)) {
+            // return the 304 Response immediately
+            // return $response;
+        // }
         $donnees = $phoneRepository->findAll();
         $pagination = $paginator->paginate($donnees,$request->query->getInt('page',1),2);
         $response = 
@@ -76,18 +95,36 @@ class PhoneController extends AbstractController
      *        @OA\Items(ref=@Model(type=App\Entity\Phone::class, groups={"showPhoneV2"}))
      *     )
      * )
+     * @OA\Response(
+     *     response=404,
+     *     description="Id not found",
+     *     
+     * )
+     * 
+     *  * @OA\Response(
+     *     response=403,
+     *     description="Invalid Credentials or invalid Token",
+     *     
+     * )
      * @OA\Tag(name="Phones")
      * @NelmioSecurity(name="Bearer")
      *
      * @param Phones $phone
      * @return Response
      */
-
-
     #[Route('/phones/{id}', name: 'detailPhoneV2', methods: ['GET'])]
-    public function getDetailPhone(Phone $phone, SerializerInterface $serializer): JsonResponse {
-
-        $jsonPhone = $serializer->serialize($phone, 'json', ['groups' => ['showPhoneV2']]);        
-        return new JsonResponse($jsonPhone, Response::HTTP_OK, ['accept' => 'json'], true);
+    public function getDetailPhone(Phone $phone, SerializerInterface $serializer,Request $request): JsonResponse {
+        $response = new JsonResponse();
+        $response->setEtag(md5(serialize($phone)));
+        $response->setLastModified($phone->getUpdatedAt());
+        $response->setPublic();
+            if ($response->isNotModified($request)) {
+            return $response;
+            
+        }
+        
+        $jsonPhone = $serializer->serialize($phone, 'json', ['groups' => ['showPhoneV2']]);     
+        $response->setContent($jsonPhone);   
+        return $response;
    }
 }

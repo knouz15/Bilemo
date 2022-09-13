@@ -19,6 +19,7 @@ use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\HttpKernel\EventListener\AbstractSessionListener;
 
 class PhoneController extends AbstractController
 { 
@@ -49,6 +50,7 @@ class PhoneController extends AbstractController
      * )
      * @OA\Tag(name="Phones")
      * @NelmioSecurity(name="Bearer")
+     * 
      */
     #[Route('/phones', name: 'phones', methods: ['GET'])]
     public function getAllPhones(
@@ -61,15 +63,14 @@ class PhoneController extends AbstractController
         $pagination = $paginator->paginate($donnees,$request->query->getInt('page',1),2);
         $response = 
         $this->json(
-            // $phoneRepository->findAll(),
             $pagination,
             Response::HTTP_OK,
             ['Content-Type' => 'application/json'],
             ['groups' => ['listPhonesV1']]);
         
         return $response;
+        
     }
-//   @Cache(lastModified="phone.getUpdatedAt()", Etag="'Phone' ~ phone.getId() ~ phone.getUpdatedAt().getTimestamp()")
 
     
 /**
@@ -109,23 +110,17 @@ class PhoneController extends AbstractController
         SerializerInterface $serializer
         ): JsonResponse {
 
-        // create a Response with an ETag and/or a Last-Modified header
-        $response = new Response();
-        // $response->setEtag($phone->computeETag());
-        // $response->setEtag($phone->getModel(),true);
+        $response = new JsonResponse();
+        $response->setEtag(md5(serialize($phone)));
         $response->setLastModified($phone->getUpdatedAt());
-
-        // Set response as public. Otherwise it will be private by default.
         $response->setPublic();
-
-        // Check that the Response is not modified for the given Request
         if ($response->isNotModified($request)) {
             // return the 304 Response immediately
             return $response;
         }
-        
-        $jsonPhone = $serializer->serialize($phone, 'json', ['groups' => ['showPhoneV1']]);   
 
-        return new JsonResponse($jsonPhone, Response::HTTP_OK, ['accept' => 'json'], true);
-   }
+        $jsonPhone = $serializer->serialize($phone, 'json', ['groups' => ['showPhoneV1']]);   
+        $response->setContent($jsonPhone);
+         return $response;
+    }
 }

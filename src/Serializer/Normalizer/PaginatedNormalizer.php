@@ -3,7 +3,6 @@
 namespace App\Serializer\Normalizer;
 
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
-// use App\Paginated;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Serializer\Normalizer\ContextAwareNormalizerInterface;
@@ -29,9 +28,12 @@ class PaginatedNormalizer implements ContextAwareNormalizerInterface
     {
         $context[self::ALREADY_CALLED] = true;
         $data = [];
-        foreach($object->getItems() as $item)
+        foreach($object->getItems() as $i => $item)
         {
-            $data['items'] []= $this->objectNormalizer->normalize($item, $format, $context);
+            $data['items'] [$i]= $this->objectNormalizer->normalize($item, $format, $context);
+            $data['items'] [$i]['_links']['self'] = $this->urlGenerator->generate('detailPhone', [
+                'id' => $item->getId(),
+            ], UrlGeneratorInterface::ABSOLUTE_URL);
         }
     
         $data['_links']['FirstPage'] = $this->urlGenerator->generate($object->getRoute(), [
@@ -70,8 +72,4 @@ class PaginatedNormalizer implements ContextAwareNormalizerInterface
         return $data instanceof  SlidingPagination;
     }
 
-    public function hasCacheableSupportsMethod(): bool
-    {
-        return true;
-    }
 }
