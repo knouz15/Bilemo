@@ -50,7 +50,7 @@ class UserNormalizer implements ContextAwareNormalizerInterface
         if (isset($context[self::ALREADY_CALLED])) {
             return false;
         }
-        return $data instanceof User ;//\App\Entity\User;
+        return $data instanceof User ;
     }
 
 }
