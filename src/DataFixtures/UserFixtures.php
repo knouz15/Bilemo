@@ -20,7 +20,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
     }
 
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): Void
     {
         for ($i = 0; $i < 50; $i++) {
             
