@@ -207,9 +207,9 @@ class UserController extends AbstractController
 
         if(count($errors)) {
             $errors = $serializer->serialize($errors, 'json');
-            return new Response($errors, 500, [
+            return new JsonResponse($errors, 500, [
                 'Content-Type' => 'application/json'
-            ]);
+            ],true);
         }
 
         $jsonUser = $serializer->serialize($user, 'json', ['groups' => 'listUsers']);
