@@ -43,7 +43,7 @@ class PhoneNormalizer implements ContextAwareNormalizerInterface
             return false;
         }
         
-        return $data instanceof Phone ;//\App\Entity\Phone;
+        return $data instanceof Phone ;
     }
 
 }
