@@ -53,32 +53,26 @@ class PhoneController extends AbstractController
     public function getAllPhones(
         PhoneRepository $phoneRepository,
         Request $request, 
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        SerializerInterface $serializer
     ): JsonResponse
-    {   // create a Response with an ETag and/or a Last-Modified header 
-        // $response = new Response();
-        // $response->headers->set(AbstractSessionListener::NO_AUTO_CACHE_CONTROL_HEADER, 'true');
-        // $response->setEtag(md5('myetag-'.$phone->getId().$phone->getUpdatedAt()->getTimestamp()));
-        // $response->setEtag($phone->getModel(),true);
-        // $response->setLastModified($phone->getUpdatedAt());
-// dd($response);
-        // Set response as public. Otherwise it will be private by default.
-        // $response->setPublic();
-
-        // Check that the Response is not modified for the given Request
-        // if ($response->isNotModified($request)) {
-            // return the 304 Response immediately
-            // return $response;
-        // }
+    {   
         $donnees = $phoneRepository->findAll();
         $pagination = $paginator->paginate($donnees,$request->query->getInt('page',1),2);
-        $response = 
-        $this->json(
-            // $phoneRepository->findAll(),
-            $pagination,
-            Response::HTTP_OK,
-            ['Content-Type' => 'application/json'],
-            ['groups' => ['listPhonesV2']]);
+        $response = new JsonResponse();
+        $response->setEtag(md5(serialize($pagination)));
+        $response->setPublic();
+        $response->isNotModified($request);
+        
+        $jsonPhones = 
+            $serializer->serialize($pagination,'json', ['groups' => ['listPhonesV1']]);
+            
+            $response->setContent($jsonPhones);
+        // $response = $this->json(
+        //     $pagination,
+        //     Response::HTTP_OK,
+        //     ['Content-Type' => 'application/json'],
+        //     ['groups' => ['listPhonesV2']]);
         
         return $response;
     }

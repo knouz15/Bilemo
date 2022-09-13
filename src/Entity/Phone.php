@@ -14,52 +14,42 @@ class Phone
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    // #[Groups(["getPhones","getCustomers"])]
     #[Groups(["listPhonesV1","listPhonesV2"])]
     private ?int $id = null;
 
     #[ORM\Column(length: 150)]
-    // #[Groups(["getPhones","getCustomers"])]
     #[Groups(["listPhonesV1","listPhonesV2","showPhoneV1","showPhoneV2"])]
     private ?string $brand = null;
  
     #[ORM\Column(type: Types::TEXT)]
-    // #[Groups(["getPhones","getCustomers"])]
     #[Groups(["showPhoneV1","showPhoneV2"])]
     private ?string $description = null;
 
     #[ORM\Column]
-    // #[Groups(["getPhones","getCustomers"])]
     #[Groups(["listPhonesV1","listPhonesV2","showPhoneV1","showPhoneV2"])]
     private ?float $price = null;
 
     #[ORM\Column(length: 45)]
-    // #[Groups(["getPhones","getCustomers"])]
     #[Groups(["listPhonesV1","showPhoneV1","showPhoneV2"])]
     private ?string $color = null;
 
     #[ORM\Column]
-    // #[Groups(["getPhones","getCustomers"])]
     #[Groups(["showPhonesV1","showPhoneV2"])]
     private ?float $weight = null;
 
     #[ORM\Column]
-    // #[Groups(["getPhones","getCustomers"])]
     #[Groups(["showPhonesV1","showPhoneV2"])]
     private ?bool $nfc = null;
 
     #[ORM\Column(length: 150)]
-    // #[Groups(["getPhones","getCustomers"])]
     #[Groups(["listPhonesV1","listPhonesV2","showPhoneV1","showPhoneV2"])]
     private ?string $model = null;
 
     #[ORM\Column(length: 50)]
-    // #[Groups(["getPhones","getCustomers"])]
     #[Groups(["showPhoneV1","showPhoneV2"])]    
     private ?string $resolution = null;
 
     #[ORM\Column(length: 45)]
-    // #[Groups(["getPhones","getCustomers"])]
     #[Groups(["showPhoneV1","showPhoneV2"])]    
     private ?string $storage = null;
 
@@ -71,10 +61,6 @@ class Phone
     #[ORM\Column(nullable: true)]
     #[Groups(["showPhonesV1","showPhoneV2"])]
     private ?\DateTimeImmutable $updatedAt = null;
-
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(["showPhoneV2"])]
-    private ?string $comment = null;
 
 
     public function __construct()
@@ -220,18 +206,5 @@ class Phone
 
         return $this;
     }
-
-    public function getComment(): ?string
-    {
-        return $this->comment;
-    }
-
-    public function setComment(?string $comment): self
-    {
-        $this->comment = $comment;
-
-        return $this;
-    }
-
 
 }
