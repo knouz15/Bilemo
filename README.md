@@ -92,9 +92,13 @@ Edit .env file with your configuration parameters:
 
 
 ###> lexik/jwt-authentication-bundle ###
+
 JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
+
 JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
+
 JWT_PASSPHRASE=VotrePassePhrase
+
 ###< lexik/jwt-authentication-bundle ###
   
   
