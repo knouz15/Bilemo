@@ -2,7 +2,7 @@
 
 [![SymfonyInsight](https://insight.symfony.com/projects/e25406eb-c823-4c61-9c71-a674bf0bb1e6/big.svg)](https://insight.symfony.com/projects/e25406eb-c823-4c61-9c71-a674bf0bb1e6)
 
-# Initialise project
+# Initialize project
 
 ## Versions
 * PHP 8.1.6
@@ -78,12 +78,30 @@ symfony console d:f:l
 
 ````
 
-8. Start server
+8. Generate files of JWT certificate
+
+$ mkdir -p config/jwt
+$ openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096
+$ openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout
+
+9.  Using JWT
+
+Edit .env file with your configuration parameters:
+
+
+###> lexik/jwt-authentication-bundle ###
+JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
+JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
+JWT_PASSPHRASE=VotrePassePhrase
+###< lexik/jwt-authentication-bundle ###
+  
+  
+10. Start server
 
 ````
 symfony serve
 
 ````
-9. Documentation en ligne :
+11. Documentation :
 
-Une interface pour documenter l'API et tester les différentes routes a été réalisée à l'aide de NelmioApiDocBundle.
+An interface to document the API and test the different routes has been made using NelmioApiDocBundle.
