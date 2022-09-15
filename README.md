@@ -137,10 +137,4 @@ You can access the API documentation locally at the following address:
 
 ````
 
-Or online:
-
-````
-- https://bilemo.hajbensalem.fr/api/doc
-
-````
 
