@@ -111,6 +111,36 @@ JWT_PASSPHRASE=VotrePassePhrase
 symfony serve
 ````
 
-11. Documentation :
+11. Installing Postman
+
+To interact with the APIs, you can install Postman:
+
+````
+- Postman (https://www.postman.com/)
+````
+
+Postman Tutorials:
+
+````
+- https://www.postman.com/resources/videos-tutorials/
+
+````
+
+12. Documentation
 
 An interface to document the API and test the different routes has been made using NelmioApiDocBundle.
+
+You can access the API documentation locally at the following address:
+
+````
+- http://127.0.0.1:8000/api/doc
+
+````
+
+Or online:
+
+````
+- https://bilemo.hajbensalem.fr/api/doc
+
+````
+
