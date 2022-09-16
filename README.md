@@ -2,13 +2,22 @@
 
 [![SymfonyInsight](https://insight.symfony.com/projects/e25406eb-c823-4c61-9c71-a674bf0bb1e6/big.svg)](https://insight.symfony.com/projects/e25406eb-c823-4c61-9c71-a674bf0bb1e6)
 
-# Initialize project
+
+This project is deployed on 
+
+````
+https://bilemo.hajbensalem.fr/api/doc
+
+````
+
+
+# Initialize project locally
 
 ## Versions
 * PHP 8.1.6
-* Symfony 5.3.0
+* Symfony 6.1.4
 * Doctrine 2.7.1
-* Mysql  10.4.24-MariaDB
+* mariadb-10.4.24
 
 ## Requirement
 * PHP
@@ -30,34 +39,15 @@ git clone https://github.com/knouz15/Bilemo.git
 composer install
 ```
 
-3. Download and install packages dependencies
+3. Configure Database
 
-````
-yarn install
-````
-
-or
-
-````
-npm install
-````
-
-4. Build from asset
-
-````
-composer require symfony/apache-pack
-````
-
-
-5. Using Database
-
-Update DATABASE_URL .env file with your database configuration:
+Update DATABASE_URL .env.local file with your database configuration:
 
 ````
 DATABASE_URL=mysql://db_user:db_password@127.0.0.1:3306/db_name
 ````
 
-6. Create database
+4. Create database
 ````
 
 symfony console d:d:c 
@@ -66,52 +56,28 @@ symfony console d:d:c
 Create database structure
 
 ````
-symfony console m:m
+symfony console d:m:m
 ````
 
-7. Load datas fixtures
+5. Load datas fixtures
 
 ````
 symfony console d:f:l
 ````
 
-8. Generate files of JWT certificate
- 
- ````
-$ mkdir -p config/jwt
-````
+6. Generate the SSL keys
 
 ````
-$ openssl genpkey -out config/jwt/private.pem -aes256 -algorithm rsa -pkeyopt rsa_keygen_bits:4096
+$ php bin/console lexik:jwt:generate-keypair
 ````
-
-````
-$ openssl pkey -in config/jwt/private.pem -out config/jwt/public.pem -pubout
-````
-
-9.  Using JWT
-
-Edit .env file with your configuration parameters:
-
-````
-###> lexik/jwt-authentication-bundle ###
-
-JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
-
-JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
-
-JWT_PASSPHRASE=VotrePassePhrase
-
-###< lexik/jwt-authentication-bundle ###
-````  
   
-10. Start server
+7. Start server
 
 ````
 symfony serve
 ````
 
-11. Installing Postman
+8. Installing Postman
 
 To interact with the APIs, you can install Postman:
 
@@ -126,7 +92,13 @@ Postman Tutorials:
 
 ````
 
-12. Documentation
+To test the api locally, you could also import, in your postman, the collection in this file (located at the root of this project):
+
+````
+- BilemoAPI.postman_collection.json
+````
+
+9. Documentation
 
 An interface to document the API and test the different routes has been made using NelmioApiDocBundle.
 
@@ -136,5 +108,3 @@ You can access the API documentation locally at the following address:
 - http://127.0.0.1:8000/api/doc
 
 ````
-
-

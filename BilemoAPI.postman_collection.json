@@ -1,0 +1,246 @@
+{
+	"info": {
+		"_postman_id": "546d9465-c194-407f-81b9-f9b0c46f0fa5",
+		"name": "API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22902129"
+	},
+	"item": [
+		{
+			"name": "Phone",
+			"item": [
+				{
+					"name": "V1",
+					"item": [
+						{
+							"name": "liste phones",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjI5MjQzMDgsImV4cCI6MTY2MjkyNzkwOCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiY3VzdG9tZXJfM0B0ZXN0bWFpbC5mciJ9.FFpBVQYpZaDHtI2OfQIu_Hn4Ou7rUSFn0zUBzYiCOt4E3Hx0t7R1IKyj92vCfBfZn63oQr2TC6Ztqdd8UeeeJmWj8PJNpzW_Ro7MMdHt2hNFZSc0FJ-psxWi9d5ZcgbvYCAg0WpXLaOeSwiKlgPhig0O5fwwWtc9SS-UJS7DFzuE50xOv7RamyQ3DB8sAr8nQdgv_qfvR3PCVpmuL_kOr61GndTJFX6EXB_k6jG_w1i2AdEc3EzmW97LEFBLokZ2G8Px1bC7pOyIg0UPoGQBxUHEGEVql9ulEZ8TrwgcogoHdE3DdFBhIDNgO5FmYAT-Rc6zLJHnIqbMRSWZR9yiWTX8o0AMsHMLf9HczeSaQzFCYUC1AMuzRxlVuvmqLXqOBN32o0dr26bxlJNQJUuLm_g4RS8-ZTh3XoBOaF8QtYTfz5JPGeE_Ez9T2Up-niH5VwAZo7U8TipUbbETTKxim-hr2zhTRZBK4HYEevV-FDu9bepGxmVRp3OUQRBsBh701FjmIHyYIYVuc_2sY-K2M03cN10RUzLzKcokgb_JyTn6LTm4nu1hbw4revq9HaZ3jSAXN-6hpvZGwo362P_RyJ6eNKzQ_GSvZ7ZBmoCcWHf-ff4YrKRXJGeZJ5gosvRBIL613LZOKBC5-z4A0ewJxGIgOR3vKGFGYByz__B5LUU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "https://127.0.0.1:8000/api/V1/phones",
+									"protocol": "https",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"V1",
+										"phones"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "V2",
+					"item": [
+						{
+							"name": "liste phones",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://127.0.0.1:8000/api/V2/phones",
+									"protocol": "https",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"V2",
+										"phones"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "V1",
+					"item": [
+						{
+							"name": "liste users",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjI5MTUwNzIsImV4cCI6MTY2MjkxODY3Miwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiY3VzdG9tZXJfM0B0ZXN0bWFpbC5mciJ9.lwXfwOcXkfWd217osHULL-nHo9YgYv5BjVWNCoqymNWCHJmAJuwyFbxlcdG_oufFDF3tM2Tyl7cBQfkeZh7j1kxpYRPRTckKHtxLYNCV6Mty-BbNbwKvEJjZXR1R5aN_jQfkCp0-yAHNLiW4HDJHzNq2bZjyCmNFMxEG45ID8-aFY6hhqFdTZhSmCkvOAoBiwXUQVXsouAA_trGdS9LHI1qcUCBli7nnxQzubTwFYIfxBB0fkyvXL37XWBnIJRVfuqct2fylteuBH8aYa9Xro-g5dFeEIZjDznj1HQAaWrUNT772GTtcdiCgXwK3rCdJo7USxC_8ND--8pfqhV4wflUdLnb1ZWVQn_jzgu6AcBs0wbXgix865lbB7JvNh_sawPMW4kYv18XZ58lWSzeRprtUBf8UxJ_NxY2FnAy7LoNvgkh8W84RuEhIIL3Ct2aoEKbO08-ZMPFA5WxECFrkeEaCUUkrgUtQ4kCZJNIrsCcGYlz13cyEwo1XS-TW0Fn8ivCOuMtTU8oAyfEakq-agut5cCj35_fuMrw1XSN82yALAdvuVeTHz3rjzFr3wKIFdmM6QIB_lE0sNRCPTFqboKmTaU1PYYj3mJJCiH1KJGSfJ6sSP8IE4Tn199XB4Q3Zo0D1i2cMa0BYcfjAklv3YA5RN8Ncl6jNtfJtZ9NOJJA",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://127.0.0.1:8000/api/V1/users",
+									"protocol": "https",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"V1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Créer user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjI5MjQzMDgsImV4cCI6MTY2MjkyNzkwOCwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiY3VzdG9tZXJfM0B0ZXN0bWFpbC5mciJ9.FFpBVQYpZaDHtI2OfQIu_Hn4Ou7rUSFn0zUBzYiCOt4E3Hx0t7R1IKyj92vCfBfZn63oQr2TC6Ztqdd8UeeeJmWj8PJNpzW_Ro7MMdHt2hNFZSc0FJ-psxWi9d5ZcgbvYCAg0WpXLaOeSwiKlgPhig0O5fwwWtc9SS-UJS7DFzuE50xOv7RamyQ3DB8sAr8nQdgv_qfvR3PCVpmuL_kOr61GndTJFX6EXB_k6jG_w1i2AdEc3EzmW97LEFBLokZ2G8Px1bC7pOyIg0UPoGQBxUHEGEVql9ulEZ8TrwgcogoHdE3DdFBhIDNgO5FmYAT-Rc6zLJHnIqbMRSWZR9yiWTX8o0AMsHMLf9HczeSaQzFCYUC1AMuzRxlVuvmqLXqOBN32o0dr26bxlJNQJUuLm_g4RS8-ZTh3XoBOaF8QtYTfz5JPGeE_Ez9T2Up-niH5VwAZo7U8TipUbbETTKxim-hr2zhTRZBK4HYEevV-FDu9bepGxmVRp3OUQRBsBh701FjmIHyYIYVuc_2sY-K2M03cN10RUzLzKcokgb_JyTn6LTm4nu1hbw4revq9HaZ3jSAXN-6hpvZGwo362P_RyJ6eNKzQ_GSvZ7ZBmoCcWHf-ff4YrKRXJGeZJ5gosvRBIL613LZOKBC5-z4A0ewJxGIgOR3vKGFGYByz__B5LUU",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "https://127.0.0.1:8000/api/V1/users",
+									"protocol": "https",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"V1",
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "V2",
+					"item": [
+						{
+							"name": "liste users",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://127.0.0.1:8000/api/V2/users",
+									"protocol": "https",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"V2",
+										"users"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "login",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjIwMTk3MzksImV4cCI6MTY2MjAyMzMzOSwicm9sZXMiOlsiUk9MRV9VU0VSIl0sInVzZXJuYW1lIjoiY3VzdG9tZXJfM0B0ZXN0bWFpbC5mciJ9.RJm7-H7l07myTcnw3QrR2UaFLzassG6BVZJ8EHzbF0d498kehqJtm6nSBu8IwV4Cpi_fmNLZIyPD8RpD8Ruj2SX6Hg9gaVsvT5kAayDEkHmcdZDJBFyfVrHb5nZ0e8wV6DacjLUxijFjZdPQ2Abs10ZY2RItxknHPeHNO6B8-uWqxVNfvuwcKwdcvbcTHGrpL1RDQk0mfAaOKI48pocZoCKavjv6gSlAgbRVeeDkluGpDCI3YDMNvnONTeGU3WNkKHQ4p9ZKPnThd19tLMupnt48axD9-kHjOFmDQfeVnk_jVwI_ybwpev_sNZnhbFGLCw0zEs_FNFFWMNL7rcyEUOVbmV2pfRrX5vxmUHMw5o-blh-HscRIRQwGQVpMUUAbtzi9GB97FlIWi59pJHYn9cb-5eBVuTO13KOPmty4FRWnSj2aJPcg7GfGZUbthUHiFkZqdFoYoWIWhyzGI9PAOetP5WZjq3zyJ5yuhiHuEWwZeNmnJBMY6ygvfKZwR6UN7yqqCSj80k_ZPl8TSn114vl76QozGKSLJ71NrLFhvIkAPitMFLm94I1bayxhXFmh6MvvwVmuRpuNy_7UEv5qDWP1LJ4leFXIXDD0eUC3KmZc554eZox-UogBIM917IitdH92y95b3cxgoLsF-hHe5SU5M8zrWutLYifuOcZAVS8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"username\" : \"customer_3@testmail.fr\",\r\n    \"password\" : \"password\"\r\n}"
+				},
+				"url": {
+					"raw": "https://127.0.0.1:8000/api/login_check",
+					"protocol": "https",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "8000",
+					"path": [
+						"api",
+						"login_check"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
